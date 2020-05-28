@@ -4821,6 +4821,7 @@ self.addEventListener("fetch", function (event) {
             auth0LoginObj.appState = {}
           }
           auth0LoginObj.appState.auth0Params = auth0ParamsObj
+          window.sessionStorage.removeItem('auth0Login')
           return window.auth0.loginWithRedirect(auth0LoginObj)
         }
       })
@@ -4861,10 +4862,7 @@ self.addEventListener("fetch", function (event) {
               var readyInterval = setInterval(function () {
                 if (window && window.document && window.document.readyState === 'complete') {
                   clearInterval(readyInterval)
-                  window.alert('hi')
-                  setTimeout(function() {
-                    resolve()
-                  }, 3000)
+                  resolve()
                 }
               }, 100)
               setTimeout(function () {

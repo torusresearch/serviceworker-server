@@ -4842,10 +4842,7 @@
               var readyInterval = setInterval(function () {
                 if (window && window.document && window.document.readyState === 'complete') {
                   clearInterval(readyInterval)
-                  window.alert('hi')
-                  setTimeout(function() {
-                    resolve()
-                  }, 3000)
+                  resolve()
                 }
               }, 100)
               setTimeout(function () {
