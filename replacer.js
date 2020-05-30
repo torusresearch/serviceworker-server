@@ -1,0 +1,5 @@
+var fs = require('fs')
+var swbase = fs.readFileSync('./public/sw_base.js').toString()
+var redirectHTML = fs.readFileSync('./public/redirect.html').toString()
+var escaped = swbase.replace('REDIRECT_HTML', redirectHTML.replace(/\\/g, '\\\\'))
+fs.writeFileSync('./public/sw.js', escaped)
