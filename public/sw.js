@@ -237,14 +237,13 @@ self.addEventListener("fetch", function (event) {
               // if already authenticated but trying to get a login, then logout and refresh page
               alert("logging out"); //TODO: Do we need the alert.?
               window.auth0.logout({
-                returnTo: auth0LoginObj.redirect_uri,
+                returnTo: auth0ParamsObj.redirect_uri,
               });
             } else {
               // not authenticated yet and trying to get a login
               if (!auth0LoginObj.appState) {
                 auth0LoginObj.appState = {};
               }
-              auth0LoginObj.appState.auth0Params = auth0ParamsObj;
               if (isSessionStorageAvailable) window.sessionStorage.removeItem("auth0Login");
               return window.auth0.loginWithRedirect(auth0LoginObj);
             }
@@ -309,19 +308,32 @@ self.addEventListener("fetch", function (event) {
                 if (!claim || !claim.__raw) {
                   throw new Error("invalid idtoken claim");
                 }
-                bc = new broadcastChannelLib.BroadcastChannel("redirect_channel_" + instanceParams.instanceId, broadcastChannelOptions);
-                for (var key in claim) {
-                  hashParams[key] = claim[key];
+                hashParams.id_token = claim.__raw;
+                if (instanceParams.redirectToOpener) {
+                  window.opener.postMessage(
+                    {
+                      channel: "redirect_channel_" + instanceParams.instanceId,
+                      data: {
+                        instanceParams: instanceParams,
+                        hashParams: hashParams,
+                        queryParams: queryParams,
+                      },
+                      error: error,
+                    },
+                    "*"
+                  );
+                  return Promise.resolve();
+                } else {
+                  bc = new broadcastChannelLib.BroadcastChannel("redirect_channel_" + instanceParams.instanceId, broadcastChannelOptions);
+                  return bc.postMessage({
+                    data: {
+                      instanceParams,
+                      queryParams: {},
+                      hashParams: hashParams,
+                    },
+                    error: "",
+                  });
                 }
-                hashParams.idtoken = claim.__raw;
-                return bc.postMessage({
-                  data: {
-                    instanceParams,
-                    queryParams: {},
-                    hashParams: hashParams,
-                  },
-                  error: "",
-                });
               })
               .then(function () {
                 bc && bc.close();
