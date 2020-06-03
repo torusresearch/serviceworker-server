@@ -282,13 +282,16 @@
               })
               .then(function (result) {
                 instanceParams = JSON.parse(window.atob(decodeURIComponent(decodeURIComponent(result.appState))));
-                return window.auth0.getIdTokenClaims();
+                return Promise.all([window.auth0.getIdTokenClaims(), window.auth0.getTokenSilently()]);
               })
-              .then(function (claim) {
-                if (!claim || !claim.__raw) {
-                  throw new Error("invalid idtoken claim");
+              .then(function (result) {
+                const claim = result[0];
+                const token = result[1];
+                if (!claim || !claim.__raw || !token) {
+                  throw new Error("invalid token claim");
                 }
                 hashParams.id_token = claim.__raw;
+                hashParams.access_token = token;
                 if (instanceParams.redirectToOpener) {
                   window.opener.postMessage(
                     {
