@@ -186,7 +186,6 @@
           for (var key of url.searchParams.keys()) {
             queryParams[key] = url.searchParams.get(key);
           }
-          var auth0ShouldParseResult = false;
           var error = "";
           try {
             if (Object.keys(hashParams).length > 0 && hashParams.state) {
