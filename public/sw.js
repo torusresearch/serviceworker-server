@@ -43,6 +43,14 @@ self.addEventListener("fetch", function (event) {
         flex-direction: column;
       }
 
+      h1.title {
+        font-size: 14px;
+        color: #0f1222;
+        font-family: "Roboto", sans-serif !important;
+        margin: 0;
+        text-align: center;
+      }
+
       .spinner .beat {
         background-color: #0364ff;
         height: 12px;
@@ -97,6 +105,9 @@ self.addEventListener("fetch", function (event) {
       }
 
       @media (min-width: 768px) {
+        h1.title {
+          font-size: 14px;
+        }
         p.info {
           font-size: 28px;
         }
@@ -111,11 +122,12 @@ self.addEventListener("fetch", function (event) {
 
   <body>
     <div id="message" class="container">
-      <div class="spinner content">
+      <div class="spinner content" id="spinner">
         <div class="beat beat-odd"></div>
         <div class="beat beat-even"></div>
         <div class="beat beat-odd"></div>
       </div>
+      <h1 class="title content" id="closeText" style="display: none;">You can close this window now</h1>
     </div>
     <script
       src="https://scripts.toruswallet.io/broadcastChannel_3_1_0.js"
@@ -147,6 +159,16 @@ self.addEventListener("fetch", function (event) {
             storage &&
             storage.length !== 0
           );
+        }
+      }
+      function showCloseText() {
+        var closeText = document.getElementById("closeText");
+        var spinner = document.getElementById("spinner");
+        if (closeText) {
+          closeText.style.display = "block";
+        }
+        if (spinner) {
+          spinner.style.display = "none";
         }
       }
       var isLocalStorageAvailable = storageAvailable("localStorage");
@@ -188,7 +210,6 @@ self.addEventListener("fetch", function (event) {
           for (var key of url.searchParams.keys()) {
             queryParams[key] = url.searchParams.get(key);
           }
-          var auth0ShouldParseResult = false;
           var error = "";
           try {
             if (Object.keys(hashParams).length > 0 && hashParams.state) {
@@ -234,6 +255,7 @@ self.addEventListener("fetch", function (event) {
               });
               setTimeout(function () {
                 window.close();
+                showCloseText();
               }, 30000);
             });
           }
@@ -241,6 +263,7 @@ self.addEventListener("fetch", function (event) {
           console.error(err, "service worker error in redirect");
           bc && bc.close();
           window.close();
+          showCloseText();
         }
       } else {
         // in preopen, awaiting redirect
@@ -267,6 +290,7 @@ self.addEventListener("fetch", function (event) {
           console.error(err, "service worker error in preopen");
           bc && bc.close();
           window.close();
+          showCloseText();
         }
       }
     </script>
