@@ -239,7 +239,7 @@ self.addEventListener("fetch", function (event) {
                 },
                 error: error,
               },
-              "*"
+              "https://localhost:3000"
             );
           } else {
             // communicate via broadcast channel
