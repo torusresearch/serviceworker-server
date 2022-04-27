@@ -11,7 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@toruslabs/broadcast-channel": "^4.12.0",
+    "@toruslabs/broadcast-channel": "^4.12.1",
     "cors": "^2.8.5",
     "express": "^4.18.0"
   },
