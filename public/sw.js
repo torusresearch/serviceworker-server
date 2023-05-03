@@ -135,8 +135,8 @@ self.addEventListener("fetch", function (event) {
       <h1 class="title content" id="closeText" style="display: none;">You can close this window now</h1>
     </div>
     <script
-      src="https://scripts.toruswallet.io/broadcastChannel_3_1_0.js"
-      integrity="sha384-xZA9e8T2sQ3eBH6+D8PNECKbFOogWEHbtcYOFp1lB1bifyxBKzWRIHnk9ecVUse4"
+      src="https://scripts.toruswallet.io/broadcastChannel_7_0_0.js"
+      integrity="sha384-pIIXzHLtGFQiHsKXsY97Qe0h3wGNiU7IyCLXX6waFb2br/zmGkH+ms1ijYIQD0Rl"
       crossorigin="anonymous"
     ></script>
     <script>
@@ -177,7 +177,6 @@ self.addEventListener("fetch", function (event) {
         }
       }
       var isLocalStorageAvailable = storageAvailable("localStorage");
-      var isSessionStorageAvailable = storageAvailable("sessionStorage");
       // set theme
       let theme = "light";
       if (isLocalStorageAvailable) {
