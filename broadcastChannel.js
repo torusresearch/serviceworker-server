@@ -1,3 +1,10 @@
 var BroadcastChannel = require("@toruslabs/broadcast-channel").BroadcastChannel;
+var { encode, decode, toBase64, fromBase64, toBuffer } = require("base64url");
 window.broadcastChannelLib = {};
 window.broadcastChannelLib.BroadcastChannel = BroadcastChannel;
+window.base64urlLib = {};
+window.base64urlLib.encode = encode;
+window.base64urlLib.decode = decode;
+window.base64urlLib.toBase64 = toBase64;
+window.base64urlLib.fromBase64 = fromBase64;
+window.base64urlLib.toBuffer = toBuffer;
